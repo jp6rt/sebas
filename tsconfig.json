@@ -1,0 +1,28 @@
+{
+	"compilerOptions": {
+		"alwaysStrict": true,
+		"diagnostics": true,
+		"listEmittedFiles": true,
+		"listFiles": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"traceResolution": false,
+		"declaration": false,
+		"module": "commonjs",
+		"target": "es6",
+		"noImplicitAny": false,
+		"moduleResolution": "node",
+		"sourceMap": false,
+		"outDir": "./app/dist",
+		"baseUrl": ".",
+		"paths": {
+			"*": [
+				"node_modules/*",
+				"./app/src/types/*"
+			]
+		}		
+	},
+	"include": [
+		"./app/src/**/*"
+	]
+}
