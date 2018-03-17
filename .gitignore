@@ -1,8 +1,1 @@
-node_modules/*
-!node_modules/@types/
-node_modules/@types/*
-!node_modules/@types/node/
-node_modules/@types/node/*
-!node_modules/@types/node/index.d.ts
-logs/
-dist/
+node_modules/

@@ -1,0 +1,27 @@
+{
+  "name": "@jpart/sebas",
+  "version": "2.0.0",
+  "description": "DIY nodejs server for dev environment and internal projects",
+  "main": "sebas.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jp6rt/sebas.git"
+  },
+  "keywords": [
+    "sebas",
+    "jpart"
+  ],
+  "author": "jp6rt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jp6rt/sebas/issues"
+  },
+  "homepage": "https://github.com/jp6rt/sebas#readme",
+  "devDependencies": {
+    "eslint": "^4.19.0",
+    "eslint-config-google": "^0.9.1"
+  }
+}
