@@ -6,7 +6,8 @@
 	debugMode: boolean | false,
 	port: number | 8000,
 	contentTypes: ContentTypes | /app/public/contenttypes.json,
-	timeout: number | 30000
+	timeout: number | 30000,
+	handleOptions: boolean | true
 }
 ```
 
@@ -19,11 +20,19 @@
 
 **Handlers**
 ```
-all | get | post | put | delete | options
+all | get | post | put | delete
 ```
 
 **PathHandler**
 
 ```
 (request, response):  RouteHandler
+```
+
+**ResponseHeaders**
+
+```
+{
+	[index: string]: string
+}
 ```

@@ -24,23 +24,34 @@ stop(): Observable<{pending: true}>
 ```javascript
 (instanceof RouteHandler).handle()
 ```
+
+**add middleware (pipe)**
+```javascript
+(instanceof RouteHandler).pipe(handler: PathHandler)
+(instanceof RouteHandler).pipe(path: string, handler: PathHandler)
+```
+
 **chaining handlers**
 ```javascript
-sebas.options('/status')
-.pipe((request, response) => { 
-	//
+sebas.get('/users')
+.pipe('./', (request, response) => { // equivalent to .pipe((request, response)
+	// handle all requests to this path
 })
-.pipe((request, response) => { 
-	//
-})
-.handle()
+.pipe('./:id', (request, response) => {
+	// handle all requests with id not null
+}).handle()
+
+sebas.post('/login')
+.pipe(Athentication)
+.pipe(ResponseHandler)
+}).handle()
 ```
 ### Handlers
 **static handlers**
 
 ```javascript
-static(dir: string, responseHeaders, fallback): RouteHandler
-```
+static(dir: string, responseHeaders: ResponseHeaders, fallback?: string): RouteHandler
+``` 
 
 ```javascript
 sebas.get('/public', sebas.static)
