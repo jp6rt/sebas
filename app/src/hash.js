@@ -4,14 +4,60 @@
  */
 
 const common = require('./common')
+const clilogger = require('@jpart/clilogger').clilogger
+const path = require('./path')
+
 const random = common.random
 const format = common.format
 const partitionString = common.partitionString
-// const path = require('./path')
-const clilogger = require('@jpart/clilogger').clilogger
-const logger = clilogger('hash', !0)
 const hexChars = common.hexChars
 const hexrandom = common.hexrandom
+const logger = clilogger('hash', !1)
+const splitter = path.splitter
+
+/**
+ * HashedStore - hashed paths stored on a map to avoid re-hashing paths on runtime
+ */
+function HashedStore(){
+	this.hashedPaths = new Map
+	this.hashedPathsReversed = new Map
+}
+
+/**
+ * store the hash path
+ * @function
+ * @param { string } path 
+ * @param { string } hashed 
+ */
+HashedStore.prototype.set = function(path, hashed) {
+	this.hashedPaths.set(path, hashed)
+	this.hashedPathsReversed.set(hashed, path)
+}
+
+/**
+ * retrives the hash for a path
+ * @function
+ * @param { string } path 
+ * @returns { string }
+ */
+HashedStore.prototype.get = function(path) {
+	return this.hashedPaths.get(path)
+}
+
+/**
+ * retrieves the path for a specific hash
+ * @function
+ * @param { string } hashed 
+ * @returns { string }
+ */
+HashedStore.prototype.getPath = function(hashed) {
+	return this.hashedPathsReversed.get(hashed)
+}
+
+/**
+ * hashedStore instance
+ */
+const hashedStore = new HashedStore
 
 /**
  * This function aims to reduced the hashed path
@@ -36,22 +82,17 @@ const hashreduce = (hashed) => {
 exports.hashreduce = hashreduce
 
 /**
- * hashed paths stored on a map to avoid re-hashing paths on runtime
- */
-let hashedPaths = new Map
-
-/**
  * Hash the splitted path.
  * @function
  * @argument { string } str
  * @returns { string }
  */	
-exports.hash = (str) => {
+const hash = (str) => {
 	let hashed = ''
 	// we don't need to hash the firsr char '/'
 	str = str.substr(1)
 	// pull from hashedPaths store
-	let memhashed = hashedPaths.get(str) 
+	let memhashed = hashedStore.get(str) 
 	if (memhashed) {
 		logger.primary('Using cached hash input: {0}, memhashed: {1}', str, memhashed)
 		return memhashed
@@ -69,10 +110,21 @@ exports.hash = (str) => {
 		hashed = format('{0}{1}', hashed, hexrandom())
 	}
 
+	// resolve conflicts
+	// we check if the hashed value already exist on the store 
+	// and make sure that it is not already assigned to another path
+	if ( hashedStore.getPath(hashed) &&  hashedStore.getPath(hashed) !== str ) {
+		// rehash
+		// the random value should do the trick
+		hashed = hash(str)
+	}
+
 	// cache all hashed
-	hashedPaths.set(str, hashed)
+	hashedStore.set(str, hashed)
 	return hashed
 }
+
+exports.hash = hash
 
 /**
 * Hash the whole path
@@ -82,5 +134,20 @@ exports.hash = (str) => {
 * @returns { number }
 */
 exports.hashpath = (path) => {
-		
+	const splitted = splitter(path)
+	let hashedPath = ''
+	if (splitted.length === 1) {
+		return hash(splitted[0])
+	}
+	splitted.forEach((v) => {
+		// we use the character z as path divider z := /
+		let hashed
+		// we need to use different hash for route parameter e.g., :param
+		if (v !== '/') 
+			hashed = hash(v)
+		else hashed = 'z'
+		// only use divider if hashedPath and hashed is already populated (hashedPath !== '' && hashed)
+		hashedPath = format('{0}{1}{2}', hashedPath,  hashedPath !== '' && hashed !== 'z' ? 'z' : '', hashed)
+	})
+	return hashedPath
 }

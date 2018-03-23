@@ -23,7 +23,8 @@ exports.format = function(){
  */
 exports.random = () => {
 	const rand = (Math.random() + '').substr(2) * 1
-	return (rand % 9) + 1
+	// (rand % 10) returns a number 0-9
+	return (rand % 10) + 1
 }
 
 /**
@@ -33,7 +34,8 @@ exports.random = () => {
  */
 exports.hexrandom = () => {
 	const rand = (Math.random() + '').substr(2) * 1
-	return hexChars[ (rand % 15) + 1 ]
+	// (rand % 16) returns a number 0-15
+	return hexChars[ rand % 16 ]
 }
 
 /**
