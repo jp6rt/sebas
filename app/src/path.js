@@ -1,28 +1,44 @@
 /**
  * @function
- * @param { string } path
+ * @param { string } routepath
  * @return { string[] } 
  */
-exports.splitter = (path) => {
+const splitter = (routepath) => {
 	let result = []
-	path.slice(1).split('/').forEach((str) => { 
+	routepath.slice(1).split('/').forEach((str) => { 
 		result.push('/' + str)
 	})
 	return result
 }
 
+exports.splitter = splitter
+
 /**
+ * Used for splitted path
+ * Validates the given path and returns a boolean => !0 for valid, 01 for invalid
  * @function
- * @param { string } path
+ * @param { string } routepath 
+ * @returns { boolean }
+ */
+const valid = (routepath) => {
+	const validPathRgx = /\/:?[a-zA-Z0-9]+/
+	return routepath.match(validPathRgx)
+}
+
+exports.valid = valid
+
+/**
+ * Used for combined path
+ * Validates the given path and returns a boolean => !0 for valid, 01 for invalid
+ * @function
+ * @param { string } routepath
  * @returns { boolean } 
  */
-exports.valid = (path) => {
-	const validPath = /\/:?[a-zA-Z0-9]+/
-	const splitted = path.splitter(path)
+exports.validPath = (routepath) => {
+	const splitted = splitter(routepath)
 	let validPathCounts = 0
 
 	for (let i=0;i<splitted.length;i++)
-		splitted[i].match(validPath) && ++validPathCounts
-
+		valid(splitted[i]) && ++validPathCounts
 	return validPathCounts === splitted.length
 }

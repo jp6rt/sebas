@@ -2,6 +2,8 @@ const $hash = require('./hash')
 const hash = $hash.hash
 const hashpath = $hash.hashpath
 
+const format = require('./common').format
+
 describe('Hash Functions', () => {
 	const path = '/users'
 	const pathWildCard = '/users/'
@@ -21,5 +23,9 @@ describe('Hash Functions', () => {
 
 		expect(hashpath(subpath)).toEqual(hashpath(subpath))
 		expect(hashpath(subpath)).toEqual(hashpath(subpath))
+	})
+
+	it('should use the correct splitted hash format', () => {
+
 	})
 })

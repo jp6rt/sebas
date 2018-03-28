@@ -26,22 +26,22 @@ function HashedStore(){
 /**
  * store the hash path
  * @function
- * @param { string } path 
+ * @param { string } routepath 
  * @param { string } hashed 
  */
-HashedStore.prototype.set = function(path, hashed) {
-	this.hashedPaths.set(path, hashed)
-	this.hashedPathsReversed.set(hashed, path)
+HashedStore.prototype.set = function(routepath, hashed) {
+	this.hashedPaths.set(routepath, hashed)
+	this.hashedPathsReversed.set(hashed, routepath)
 }
 
 /**
  * retrives the hash for a path
  * @function
- * @param { string } path 
+ * @param { string } routepath 
  * @returns { string }
  */
-HashedStore.prototype.get = function(path) {
-	return this.hashedPaths.get(path)
+HashedStore.prototype.get = function(routepath) {
+	return this.hashedPaths.get(routepath)
 }
 
 /**
@@ -133,8 +133,8 @@ exports.hash = hash
 * @argument { string } path
 * @returns { number }
 */
-exports.hashpath = (path) => {
-	const splitted = splitter(path)
+exports.hashpath = (routepath) => {
+	const splitted = splitter(routepath)
 	let hashedPath = ''
 	if (splitted.length === 1) {
 		return hash(splitted[0])
@@ -146,7 +146,7 @@ exports.hashpath = (path) => {
 		if (v !== '/') 
 			hashed = hash(v)
 		else hashed = 'z'
-		// only use divider if hashedPath and hashed is already populated (hashedPath !== '' && hashed)
+		// only use divider if hashedPath and hashed is already populated (hashedPath !== '' && hashed !== 'z')
 		hashedPath = format('{0}{1}{2}', hashedPath,  hashedPath !== '' && hashed !== 'z' ? 'z' : '', hashed)
 	})
 	return hashedPath
