@@ -1,4 +1,13 @@
 /**
+ * NodeJS Path module
+ * @constant
+ */
+const path = require('path')
+
+const common = require('./common')
+const format = common.format
+
+/**
  * @function
  * @param { string } routepath
  * @return { string[] } 
@@ -22,10 +31,22 @@ exports.splitter = splitter
  */
 const valid = (routepath) => {
 	const validPathRgx = /\/:?[a-zA-Z0-9]+/
-	return routepath.match(validPathRgx)
+	return !!routepath.match(validPathRgx)
 }
 
 exports.valid = valid
+
+/**
+ * @function
+ * @param { string } routepath 
+ * @returns { boolean }
+ */
+const isRouteParam = (routepath) => {
+	const routeParamRgx = /\/:[a-zA-Z0-9]+/
+	return !!routepath.match(routeParamRgx)
+}
+
+exports.isRouteParam = isRouteParam
 
 /**
  * Used for combined path
@@ -41,4 +62,8 @@ exports.validPath = (routepath) => {
 	for (let i=0;i<splitted.length;i++)
 		valid(splitted[i]) && ++validPathCounts
 	return validPathCounts === splitted.length
+}
+
+exports.normalize = (routepath) => {
+	return path.normalize(format('{0}{1}', '/', routepath))
 }

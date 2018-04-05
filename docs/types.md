@@ -26,7 +26,7 @@ all | get | post | put | delete
 **PathHandler**
 
 ```
-(request, response):  RouteHandler
+(request, response, next, data):  RouteHandler
 ```
 
 **ResponseHeaders**

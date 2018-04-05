@@ -25,7 +25,13 @@ describe('Hash Functions', () => {
 		expect(hashpath(subpath)).toEqual(hashpath(subpath))
 	})
 
-	it('should use the correct splitted hash format', () => {
+	it ('should replace route param with the PARAM constant', () => {
+		expect(hash('/:id')).toEqual($hash.PATH_CONST_CHARS.PARAM)
+		expect(hashpath('/:id')).toEqual($hash.PATH_CONST_CHARS.PARAM)
+	})
 
+	it('should use the correct splitted hash format', () => {
+		const hashed = hash(path)
+		expect(hashpath('/users/:id')).toEqual(format('{0}{1}{2}', hashed, $hash.PATH_CONST_CHARS.DIV, $hash.PATH_CONST_CHARS.PARAM))
 	})
 })

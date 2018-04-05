@@ -14,6 +14,19 @@ const hexChars = common.hexChars
 const hexrandom = common.hexrandom
 const logger = clilogger('hash', !1)
 const splitter = path.splitter
+const isRouteParam = path.isRouteParam
+
+/**
+ * Enum for path constant characters
+ * @readonly
+ * @enum { char }
+ */
+const PATH_CONST_CHARS = {
+	DIV: 'z',
+	PARAM: 'y'
+}
+
+exports.PATH_CONST_CHARS = PATH_CONST_CHARS
 
 /**
  * HashedStore - hashed paths stored on a map to avoid re-hashing paths on runtime
@@ -88,7 +101,11 @@ exports.hashreduce = hashreduce
  * @returns { string }
  */	
 const hash = (str) => {
-	let hashed = ''
+
+	// check if it is a route parameter and return the PARAM constant
+	if (isRouteParam(str)) {
+		return PATH_CONST_CHARS.PARAM
+	}
 	// we don't need to hash the firsr char '/'
 	str = str.substr(1)
 	// pull from hashedPaths store
@@ -97,7 +114,7 @@ const hash = (str) => {
 		logger.primary('Using cached hash input: {0}, memhashed: {1}', str, memhashed)
 		return memhashed
 	}	
-
+	let hashed = ''
 	for (const i in str) {
 		const num = (str[i]).charCodeAt() * random() 
 		hashed = format('{0}{1}', hashed, hexChars[ num%16 ] )
@@ -130,7 +147,7 @@ exports.hash = hash
 * Hash the whole path
 * uses hash function (local)
 * @function
-* @argument { string } path
+* @argument { string } routepath
 * @returns { number }
 */
 exports.hashpath = (routepath) => {
@@ -139,15 +156,14 @@ exports.hashpath = (routepath) => {
 	if (splitted.length === 1) {
 		return hash(splitted[0])
 	}
-	splitted.forEach((v) => {
-		// we use the character z as path divider z := /
+	splitted.forEach((v) => {		
 		let hashed
-		// we need to use different hash for route parameter e.g., :param
-		if (v !== '/') 
+		if (v === '/')
+			hashed = PATH_CONST_CHARS.DIV
+		else 
 			hashed = hash(v)
-		else hashed = 'z'
 		// only use divider if hashedPath and hashed is already populated (hashedPath !== '' && hashed !== 'z')
-		hashedPath = format('{0}{1}{2}', hashedPath,  hashedPath !== '' && hashed !== 'z' ? 'z' : '', hashed)
+		hashedPath = format('{0}{1}{2}', hashedPath,  hashedPath !== '' && hashed !== PATH_CONST_CHARS.DIV ? PATH_CONST_CHARS.DIV  : '', hashed)
 	})
 	return hashedPath
 }

@@ -27,6 +27,7 @@ stop(): Observable<{pending: true}>
 
 **add middleware (pipe)**
 ```javascript
+// overload
 (instanceof RouteHandler).pipe(handler: PathHandler)
 (instanceof RouteHandler).pipe(path: string, handler: PathHandler)
 ```
@@ -34,10 +35,10 @@ stop(): Observable<{pending: true}>
 **chaining handlers**
 ```javascript
 sebas.get('/users')
-.pipe('./', (request, response) => { // equivalent to .pipe((request, response)
+.pipe('./', (request, response, next, data) => { // equivalent to .pipe((request, response)
 	// handle all requests to this path
 })
-.pipe('./:id', (request, response) => {
+.pipe('./:id', (request, response, next, data) => {
 	// handle all requests with id not null
 }).handle()
 
