@@ -6,6 +6,8 @@
 const common = require('./common')
 const clilogger = require('@jpart/clilogger').clilogger
 const path = require('./path')
+const HashedStore = require('./HashedStore')
+const PATH_CONST_CHARS = require('./enums/path_const_chars')
 
 const random = common.random
 const format = common.format
@@ -15,57 +17,6 @@ const hexrandom = common.hexrandom
 const logger = clilogger('hash', !1)
 const splitter = path.splitter
 const isRouteParam = path.isRouteParam
-
-/**
- * Enum for path constant characters
- * @readonly
- * @enum { char }
- */
-const PATH_CONST_CHARS = {
-	DIV: 'z',
-	PARAM: 'y'
-}
-
-exports.PATH_CONST_CHARS = PATH_CONST_CHARS
-
-/**
- * HashedStore - hashed paths stored on a map to avoid re-hashing paths on runtime
- */
-function HashedStore(){
-	this.hashedPaths = new Map
-	this.hashedPathsReversed = new Map
-}
-
-/**
- * store the hash path
- * @function
- * @param { string } routepath 
- * @param { string } hashed 
- */
-HashedStore.prototype.set = function(routepath, hashed) {
-	this.hashedPaths.set(routepath, hashed)
-	this.hashedPathsReversed.set(hashed, routepath)
-}
-
-/**
- * retrives the hash for a path
- * @function
- * @param { string } routepath 
- * @returns { string }
- */
-HashedStore.prototype.get = function(routepath) {
-	return this.hashedPaths.get(routepath)
-}
-
-/**
- * retrieves the path for a specific hash
- * @function
- * @param { string } hashed 
- * @returns { string }
- */
-HashedStore.prototype.getPath = function(hashed) {
-	return this.hashedPathsReversed.get(hashed)
-}
 
 /**
  * hashedStore instance
