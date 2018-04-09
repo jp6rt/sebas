@@ -1,5 +1,6 @@
 const path = require('./path')
 const common = require('./common')
+const Route = require('./classes/Route')
 
 /**
  * @function
