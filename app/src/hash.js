@@ -6,7 +6,7 @@
 const common = require('./common')
 const clilogger = require('@jpart/clilogger').clilogger
 const path = require('./path')
-const HashedStore = require('./HashedStore')
+const HashedStore = require('./classes/HashedStore')
 const PATH_CONST_CHARS = require('./enums/path_const_chars')
 
 const random = common.random
@@ -31,7 +31,7 @@ const hashedStore = new HashedStore
  * @returns { string } 
  */
 const hashreduce = (hashed) => {
-	if (hashed.length < 4)
+	if (hashed.length < 5)
 		return hashed
 	const partitioned = partitionString(hashed, 4)
 	let reduced = []
