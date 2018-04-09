@@ -13,7 +13,7 @@ const HashedStore = class {
 	 * @param { string } routepath 
 	 * @param { string } hashed 
 	 */
-	set(routepath, hashed) {
+	store(routepath, hashed) {
 		this.hashedPaths.set(routepath, hashed)
 		this.hashedPathsReversed.set(hashed, routepath)
 	}
@@ -23,7 +23,7 @@ const HashedStore = class {
 	 * @param { string } routepath 
 	 * @returns { string }
 	 */
-	get(routepath) {
+	retrieve(routepath) {
 		return this.hashedPaths.get(routepath)
 	}
 	/**
@@ -37,4 +37,4 @@ const HashedStore = class {
 	}
 }
 
-exports = HashedStore
+module.exports = HashedStore

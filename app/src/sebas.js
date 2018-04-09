@@ -10,7 +10,7 @@ const Sebas = class {
 		/**
 		 * @property { Map<string, function[]> } pathHandlers
 		 */
-		this.pathHandlers = new Map
+		this.pathHandlers = {}
 	}
 	/**
 	 * @method
@@ -30,8 +30,14 @@ const Sebas = class {
 	/**
 	 * @method
 	 */
-	addHandler(method, routepath, handler) {
-		const hashed = hashpath(routepath)
+	addHandler(method, routepath, handler) {		
+		// add a key-value store for each methods? - yes
+		// calculate path possibility
+		// auto insert new options handler
+		const hashed = hashpath(routepath), sym = Symbol.for(hashed)
+		if (!this.pathHandlers[sym])
+			this.pathHandlers[sym] = new Array
+		this.pathHandlers[sym].unshift(handler)
 	}
 }
 

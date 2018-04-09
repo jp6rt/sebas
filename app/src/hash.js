@@ -60,7 +60,7 @@ const hash = (str) => {
 	// we don't need to hash the firsr char '/'
 	str = str.substr(1)
 	// pull from hashedPaths store
-	let memhashed = hashedStore.get(str) 
+	let memhashed = hashedStore.retrieve(str) 
 	if (memhashed) {
 		logger.primary('Using cached hash input: {0}, memhashed: {1}', str, memhashed)
 		return memhashed
@@ -88,7 +88,7 @@ const hash = (str) => {
 	}
 
 	// cache all hashed
-	hashedStore.set(str, hashed)
+	hashedStore.store(str, hashed)
 	return hashed
 }
 

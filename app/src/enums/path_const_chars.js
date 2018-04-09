@@ -8,4 +8,4 @@ const PATH_CONST_CHARS = {
 	PARAM: 'y'
 }
 
-exports = PATH_CONST_CHARS
+module.exports = PATH_CONST_CHARS
