@@ -11,7 +11,7 @@ const Route = require('./classes/Route')
  */
 exports.route = (method, routepath, handler) => {
 	if (!path.validPath(routepath))
-		throw new Error(common.format('The path ({0}) you provided is not valid', routepath))
+		throw new Error(common.format('The path \'{0}\' you provided is not valid', routepath))
 	routepath = path.normalize(routepath)
 	return new Route(routepath, handler)
 }

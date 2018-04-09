@@ -30,7 +30,7 @@ exports.splitter = splitter
  * @returns { boolean }
  */
 const valid = (routepath) => {
-	const validPathRgx = /\/:?[a-zA-Z0-9]+/
+	const validPathRgx = /^\/:?[a-zA-Z0-9]*/
 	return !!routepath.match(validPathRgx)
 }
 
@@ -42,7 +42,7 @@ exports.valid = valid
  * @returns { boolean }
  */
 const isRouteParam = (routepath) => {
-	const routeParamRgx = /\/:[a-zA-Z0-9]+/
+	const routeParamRgx = /^\/:[a-zA-Z0-9]+/
 	return !!routepath.match(routeParamRgx)
 }
 
@@ -56,6 +56,10 @@ exports.isRouteParam = isRouteParam
  * @returns { boolean } 
  */
 exports.validPath = (routepath) => {
+
+	if (routepath.slice(0, 1) !== '/' && routepath.slice(0, 2) !== './')
+		return !1
+
 	const splitted = splitter(routepath)
 	let validPathCounts = 0
 

@@ -10,8 +10,8 @@ describe('Commons', () => {
 	})
 	describe('(random)', () => {
 		const random = common.random
-		xit('should be a whole number', () => {
-			
+		it('should be a whole number', () => {
+			expect(random() % 1).toEqual(0)
 		})
 		it('should be within 1-10', () => {
 			// a series of random numbers to be tested
@@ -21,25 +21,29 @@ describe('Commons', () => {
 			expect(random()).toBeLessThan(11)
 			expect(random()).toBeGreaterThan(0)
 			expect(random()).toBeLessThan(11)
-			expect(random()).toBeGreaterThan(0)
-			expect(random()).toBeLessThan(11)
-			expect(random()).toBeGreaterThan(0)
-			expect(random()).toBeLessThan(11)
-			expect(random()).toBeGreaterThan(0)
-			expect(random()).toBeLessThan(11)
-			expect(random()).toBeGreaterThan(0)
-			expect(random()).toBeLessThan(11)
-			expect(random()).toBeGreaterThan(0)
-			expect(random()).toBeLessThan(11)
-			expect(random()).toBeGreaterThan(0)
-			expect(random()).toBeLessThan(11)
-			expect(random()).toBeGreaterThan(0)
-			expect(random()).toBeLessThan(11)
-			expect(random()).toBeGreaterThan(0)
-			expect(random()).toBeLessThan(11)
 		})
 	})
-	xdescribe('(partitionString)', () => {
-		it('should return a partitioned string')
+	describe('(hexrandom)', () => {
+		const hexrandom = common.hexrandom
+		const hexChars = common.hexChars
+		it('should return a hex character', () => {
+			expect(hexChars).toEqual(jasmine.arrayContaining([hexrandom()]))
+			expect(hexChars).toEqual(jasmine.arrayContaining([hexrandom()]))
+			expect(hexChars).toEqual(jasmine.arrayContaining([hexrandom()]))
+		})
+	})
+	describe('(partitionString)', () => {
+		const partitionString = common.partitionString
+		const myStr = 'foobar'
+		const partitioned = partitionString(myStr, 3)
+		it('should partition the string into length of 3', () => {
+			expect(partitioned).toEqual(['foo', 'bar'])
+		})
+		it('should not partition of the partition value is greater than or equal the input str length', () => {
+			const partitioned2 =  partitionString(myStr, 6)
+			const partitioned3 =  partitionString(myStr, 7)
+			expect(partitioned2).toEqual(['foobar'])
+			expect(partitioned3).toEqual(['foobar'])
+		})
 	})
 })
