@@ -40,12 +40,12 @@ sebas.get('/users')
 })
 .pipe('./:id', (request, response, next, data) => {
 	// handle all requests with id not null
-}).handle()
+})
 
 sebas.post('/login')
 .pipe(Athentication)
 .pipe(ResponseHandler)
-}).handle()
+})
 ```
 ### Handlers
 **static handlers**
@@ -59,7 +59,6 @@ sebas.get('/public', sebas.static)
 .pipe((req, res) => {
 
 })
-.handle()
 ```
 
 ### Events
