@@ -1,6 +1,4 @@
-const $hash = require('./hash')
-const hash = $hash.hash
-const hashpath = $hash.hashpath
+const { hash, hashpath } = require('./hash')
 const PATH_CONST_CHARS = require('./enums/path_const_chars')
 
 const format = require('./common').format

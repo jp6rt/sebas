@@ -1,11 +1,10 @@
-const path = require('./path')
+const { splitter, valid, isRouteParam, validPath, normalize } = require('./path')
 
 describe('path utility functions', () => {
 	const path1 = '/users'
 	const path2 = '/users/:id'
 	const path3 = '/'
 	describe('(splitter)', () => {
-		const splitter = path.splitter
 		it('should split the path into [/users]', () => {
 			expect(splitter(path1)).toEqual(['/users'])
 		})
@@ -17,7 +16,6 @@ describe('path utility functions', () => {
 		})
 	})
 	describe('(valid)', () => {
-		const valid = path.valid
 		const notValidPath = 'sebas'
 		it('should validate the path1, path2, path3', () => {
 			expect(valid(path1)).toBeTruthy()
@@ -29,7 +27,6 @@ describe('path utility functions', () => {
 		})
 	})
 	describe('(isRouteParam)', () => {
-		const isRouteParam = path.isRouteParam
 		it('should detect as route parameter', () => {
 			expect(isRouteParam('/:id')).toBeTruthy()
 		})
@@ -38,7 +35,6 @@ describe('path utility functions', () => {
 		})
 	})
 	describe('(validPath)', () => {
-		const validPath = path.validPath
 		it('should detect as valid path', () => {
 			expect(validPath(path2)).toBeTruthy()
 			expect(validPath('/path/subpath')).toBeTruthy()
@@ -48,7 +44,6 @@ describe('path utility functions', () => {
 		})
 	})
 	describe('(normalize)', () => {
-		const normalize = path.normalize
 		it('should return the same normalized value for path1', () => {
 			expect(normalize(path1)).toEqual(path1)
 		})

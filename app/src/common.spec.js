@@ -1,7 +1,6 @@
 describe('Commons', () => {
-	const common = require('./common')	
+	const { random, hexrandom, hexChars, partitionString, format  } = require('./common')	
 	describe('(format)', () => {
-		const format = common.format
 		const result = 'foobar'
 		it('should equal foobar', () => {
 			expect(format('{0}{1}', 'foo', 'bar')).toEqual(result)
@@ -9,7 +8,6 @@ describe('Commons', () => {
 		})
 	})
 	describe('(random)', () => {
-		const random = common.random
 		it('should be a whole number', () => {
 			expect(random() % 1).toEqual(0)
 		})
@@ -24,8 +22,6 @@ describe('Commons', () => {
 		})
 	})
 	describe('(hexrandom)', () => {
-		const hexrandom = common.hexrandom
-		const hexChars = common.hexChars
 		it('should return a hex character', () => {
 			expect(hexChars).toEqual(jasmine.arrayContaining([hexrandom()]))
 			expect(hexChars).toEqual(jasmine.arrayContaining([hexrandom()]))
@@ -33,7 +29,6 @@ describe('Commons', () => {
 		})
 	})
 	describe('(partitionString)', () => {
-		const partitionString = common.partitionString
 		const myStr = 'foobar'
 		const partitioned = partitionString(myStr, 3)
 		it('should partition the string into length of 3', () => {
