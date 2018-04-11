@@ -3,20 +3,12 @@
  * This hash function should yield the same result for the same input 
  */
 
-const common = require('./common')
-const clilogger = require('@jpart/clilogger').clilogger
-const path = require('./path')
+const { random, format, partitionString, hexChars, hexrandom } = require('./common')
+const { clilogger } = require('@jpart/clilogger')
+const { splitter, isRouteParam } = require('./path')
 const HashedStore = require('./classes/HashedStore')
 const PATH_CONST_CHARS = require('./enums/path_const_chars')
-
-const random = common.random
-const format = common.format
-const partitionString = common.partitionString
-const hexChars = common.hexChars
-const hexrandom = common.hexrandom
 const logger = clilogger('hash', !1)
-const splitter = path.splitter
-const isRouteParam = path.isRouteParam
 
 /**
  * hashedStore instance

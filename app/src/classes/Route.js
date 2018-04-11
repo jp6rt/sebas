@@ -1,5 +1,5 @@
-const path = require('./path')
-const common = require('./common')
+const { validPath, normalize } = require('./path')
+const { format } = require('./common')
 const sebas = require('./sebas')
 
 /**
@@ -31,12 +31,12 @@ const Route = class {
 		// Handler for arguments (routepath, handler)
 		if (typeof arg0 === 'string') {
 			// guard the path if not valid
-			if (!path.validPath(arg0) || !path.validPath(arg0.slice(0, 1)))
-				throw new Error(common.format('The path ({0}) you provided is not valid', arg0))
+			if (!validPath(arg0) || !validPath(arg0.slice(0, 1)))
+				throw new Error(format('The path ({0}) you provided is not valid', arg0))
 
-			const routepath = arg0.slice(0, 1) == '.' && path.validPath(arg0.slice(0, 1)) 
-				? path.normalize(common.format('{0}/{1}', this.parentPath, arg0.slice(0, 1))) 
-				: (path.validPath(arg0) ? arg0 : void 0)
+			const routepath = arg0.slice(0, 1) == '.' && validPath(arg0.slice(0, 1)) 
+				? normalize(format('{0}/{1}', this.parentPath, arg0.slice(0, 1))) 
+				: (validPath(arg0) ? arg0 : void 0)
 			routepath && typeof arg1 === 'function' && sebas.insertHandler(this.method, routepath, arg1)
 		}		
 		

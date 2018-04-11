@@ -1,6 +1,6 @@
-const hashpath = require('../hash').hashpath
-const METHOD_CONST = require('../methods').METHOD_CONST
-const format = require('../common').format
+const { hashpath } = require('../hash')
+const { METHOD_CONST } = require('../methods')
+const { format } = require('../common')
 const HandlersStore = require('./HandlersStore')
 
 /**
@@ -19,7 +19,9 @@ const Sebas = class {
 	 * @returns { Observable }
 	 */
 	start(config) {
-
+		return new Promise((resolve, reject) => {
+			
+		})
 	}
 	/**
 	 * @method

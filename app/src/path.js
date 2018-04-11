@@ -4,8 +4,7 @@
  */
 const path = require('path')
 
-const common = require('./common')
-const format = common.format
+const { format } = require('./common')
 
 /**
  * @function

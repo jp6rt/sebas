@@ -7,12 +7,12 @@
 ### Server
 **Starting the server**
 ```javascript
-start(config: Config): Observable<{pending: true}>
+start(config: Config): Promise<{pending: true}>
 ```
 > Emits event SebasStarted
 **Stopping the server**
 ```javascript
-stop(): Observable<{pending: true}>
+stop(): Promise<{pending: true}>
 ```
 > Emits event SebasStopped
 ### Adding routes

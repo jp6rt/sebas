@@ -1,5 +1,5 @@
-const path = require('./path')
-const common = require('./common')
+const { validPath, normalize } = require('./path')
+const { format } = require('./common')
 const Route = require('./classes/Route')
 
 /**
@@ -10,8 +10,8 @@ const Route = require('./classes/Route')
  * @returns { Route } 
  */
 exports.route = (method, routepath, handler) => {
-	if (!path.validPath(routepath))
-		throw new Error(common.format('The path \'{0}\' you provided is not valid', routepath))
-	routepath = path.normalize(routepath)
+	if (!validPath(routepath))
+		throw new Error(format('The path \'{0}\' you provided is not valid', routepath))
+	routepath = normalize(routepath)
 	return new Route(routepath, handler)
 }
