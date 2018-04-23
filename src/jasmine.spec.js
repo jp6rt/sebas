@@ -1,5 +1,5 @@
 describe('Jasmine sanity', () => {
-	it('should return an error', () => {
+	xit('should return an error', () => {
 		expect(1+1).toBe(3)
 	})
 

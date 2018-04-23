@@ -1,7 +1,5 @@
-const { validPath, normalize } = require('./path')
+const { validPath, normalize } = require('../path')
 const { format } = require('@jp6rt/utils')
-const sebas = require('./sebas')
-
 /**
  * @class
  */
@@ -13,10 +11,15 @@ const Route = class {
 	 * @param { function } handler 
 	 */
 	constructor(method, routepath, handler){
+		// move sebas inside the Route constructor
+		// we referenced the Route class on the Sebas code so it will return {} if sebas is called from the top document
+		// this.sebas = require('../sebas')
+		// removed, changed to process.sebas instead
+
 		this.parentPath = routepath
 		this.method = method
 		if (typeof handler === 'function') {
-			sebas.insertHandler(method, routepath, handler)
+			this.sebas.insertHandler(method, routepath, handler)
 		}
 	}
 
@@ -31,19 +34,20 @@ const Route = class {
 		// Handler for arguments (routepath, handler)
 		if (typeof arg0 === 'string') {
 			// guard the path if not valid
-			if (!validPath(arg0) || !validPath(arg0.slice(0, 1)))
+			if (!validPath(arg0) || !validPath(arg0.slice(1, arg0.length)))
 				throw new Error(format('The path ({0}) you provided is not valid', arg0))
 
-			const routepath = arg0.slice(0, 1) == '.' && validPath(arg0.slice(0, 1)) 
-				? normalize(format('{0}/{1}', this.parentPath, arg0.slice(0, 1))) 
+			const routepath = arg0.slice(0, 1) == '.' && validPath(arg0.slice(1, arg0.length)) 
+				? normalize(format('{0}/{1}', this.parentPath, arg0.slice(1, arg0.length))) 
 				: (validPath(arg0) ? arg0 : void 0)
-			routepath && typeof arg1 === 'function' && sebas.insertHandler(this.method, routepath, arg1)
+			routepath && typeof arg1 === 'function' && process.sebas.insertHandler(this.method, routepath, arg1)
 		}		
 		
 		// Handler for arguments (handler)
 		if (typeof arg0 === 'function') {
-			sebas.insertHandler(this.method, this.parentPath, arg0)
+			process.sebas.insertHandler(this.method, this.parentPath, arg0)
 		}
+		return this
 	}
 }
 

@@ -1,3 +1,5 @@
+const { getTopParentPath } = require('../path')
+
 /**
  * @class
  * RouteHandler constructor
@@ -23,7 +25,7 @@ const RouteHandler = class {
 		/**
 		 * @property
 		 */
-		this.parentPath = routepath.split('/')[0]
+		this.topParentPath = getTopParentPath(routepath)
 		/**
 		 * @property
 		 */
