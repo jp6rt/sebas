@@ -1,5 +1,3 @@
-const PATH_CONST_CHARS = require('../enums/path_const_chars')
-
 /**
  * @class
  * RouteHandler constructor
@@ -7,11 +5,11 @@ const PATH_CONST_CHARS = require('../enums/path_const_chars')
 const RouteHandler = class {
 	/**
 	 * 
-	 * @param { string } hashedpath 
+	 * @param { string } routepath 
 	 * @param { number } index 
 	 * @param { function } handler 
 	 */
-	constructor(hashedpath, index, handler) {
+	constructor(routepath, index, handler) {
 		/**
 		 * @property
 		 * handlerIndex stores the position of the handler on the order
@@ -25,11 +23,11 @@ const RouteHandler = class {
 		/**
 		 * @property
 		 */
-		this.parentPath = hashedpath.split(PATH_CONST_CHARS.DIV)[0]
+		this.parentPath = routepath.split('/')[0]
 		/**
 		 * @property
 		 */
-		this.path = hashedpath
+		this.path = routepath
 	}
 }
 

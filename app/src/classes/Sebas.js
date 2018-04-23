@@ -1,6 +1,5 @@
-const { hashpath } = require('../hash')
 const { METHOD_CONST } = require('../methods')
-const { format } = require('../common')
+const { format } = require('@jp6rt/utils')
 const HandlersStore = require('./HandlersStore')
 
 /**
@@ -34,7 +33,7 @@ const Sebas = class {
 	 * @method
 	 */
 	insertHandler(method, routepath, handler) {
-		this.handlersStore.insertHandler(method, hashpath(routepath), handler)
+		this.handlersStore.insertHandler(method, routepath, handler)
 	}	
 }
 

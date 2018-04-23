@@ -4,7 +4,7 @@
  */
 const path = require('path')
 
-const { format } = require('./common')
+const { format } = require('@jp6rt/utils')
 
 /**
  * @function

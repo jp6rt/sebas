@@ -1,4 +1,4 @@
-const { format } = require('../common')
+const { format } = require('@jp6rt/utils')
 const RouteHandler = require('./RouteHandler')
 
 /**
@@ -48,17 +48,17 @@ const HandlersStore = class {
 	/**
 	 * @method
 	 * @param { string } method 
-	 * @param { string } hashedpath 
+	 * @param { string } routepath 
 	 * @param { function } handler 
 	 */
-	insertHandler(method, hashedpath, handler) {
+	insertHandler(method, routepath, handler) {
 		// always evalute the method in upper case
 		method = method.toUpperCase()
 		// throw an error for non supported method
 		if (!this.supportedMethods.has(method)) {
 			throw new Error(format('The method \'{0}\' is not supported', method))
 		}
-		this[Symbol.for(method)].push(new RouteHandler(hashedpath, ++this.handlerCount, handler))
+		this[Symbol.for(method)].push(new RouteHandler(routepath, ++this.handlerCount, handler))
 	}
 }
 

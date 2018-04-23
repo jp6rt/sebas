@@ -1,5 +1,5 @@
 const { validPath, normalize } = require('./path')
-const { format } = require('./common')
+const { format } = require('@jp6rt/utils')
 const sebas = require('./sebas')
 
 /**
