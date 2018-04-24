@@ -85,13 +85,13 @@ const HandlersStore = class {
 
 
 		// some logging
-		const logger = (require('@jp6rt/cli-logger'))('HandlersStore (retrieveHandlers)', !0)
+		// const logger = (require('@jp6rt/cli-logger'))('HandlersStore (retrieveHandlers)', !0)
 
 		if (this.handlersCache.get(hash)) {
-			logger.silent('get from cache - hash: {0}, reqPath: {1}', hash, reqPath)
+			// logger.silent('get from cache - hash: {0}, reqPath: {1}', hash, reqPath)
 			return this.handlersCache.get(hash)
 		} else {
-			logger.silent('recalculate handlers - hash: {0}, reqPath: {1}', hash, reqPath)
+			// logger.silent('recalculate handlers - hash: {0}, reqPath: {1}', hash, reqPath)
 			// match and filter the right handlers for the path
 			const handlers = this[Symbol.for(method)]		
 				//  routeHandler - is an instance of RouteHandler

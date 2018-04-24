@@ -96,7 +96,7 @@ exports.removeFilename = removeFilename
 
 /**
  * 
- * @param { RouteHandler } routeHandler 
+ * @param { string } routepath 
  * @param { string } reqPath 
  * @returns { boolean }
  */

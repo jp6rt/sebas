@@ -4,6 +4,7 @@ const Route = require('./Route')
 const HandlersStore = require('./HandlersStore')
 const HashedStore = require('sb-hashedstore')
 const { SERVER_STATE } = require('../enums/server_state')
+const { extractRouteParams } = require('../routeparam')
 
 const RequestHandler = class {
 	constructor() {
@@ -73,18 +74,45 @@ const RequestHandler = class {
 	delete(routepath, handler){
 		return this.route('DELETE', routepath, handler)
 	}
-	handleRequest(request, response) {
+	/**
+	 * Use for single requests handlers only (e.g., error handling, timeout)
+	 * next iterator is not suported so make sure you end the response at this stage.
+	 * @param { object } request 
+	 * @param { object } response 
+	 * @param { function } handler 
+	 */
+	handleSingleRequest(request, response, handler) {
+		handler(request, response)
+	}
+	/**
+	 * Responsible for running the core and app handlers
+	 * @param { object } request 
+	 * @param { object } response 
+	 */
+	execRouteHandlers(request, response) {
 
 		const { method, url } = request
 		const handlers = this.handlersStore.
 			retrieveHandlers(method, url, this.hashedStore.hash(url)).
 			slice() // slice to make sure we are CLONING the handlers
 
+		// some logging	
+		// this.logger.accent('handlers: {0}', handlers)
+
 		// create an iterant and iterate the handlers array
 
 		const next = () => {
-			const handler = handlers.shift()
-			handler.handler(request, response, next.bind(this))
+			const h = handlers.shift()
+			// check if handler is defined
+			if (h) {
+
+				// get routeParams
+				const routeParams = extractRouteParams(request.url, h.path)
+
+				request.routeParams = routeParams
+				h.handler(request, response, next.bind(this))
+				
+			}				
 		}
 
 		// start iteration if found more than one handlers

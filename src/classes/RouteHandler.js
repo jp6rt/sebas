@@ -1,4 +1,5 @@
 const { getTopParentPath } = require('../path')
+const { routeParamScheme } = require('../routeparam')
 
 /**
  * @class
@@ -30,6 +31,10 @@ const RouteHandler = class {
 		 * @property
 		 */
 		this.path = routepath
+		/**
+		 * @property
+		this.routeParamScheme = routeParamScheme(routepath)
+		*/
 	}
 }
 
