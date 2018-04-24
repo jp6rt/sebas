@@ -5,7 +5,6 @@
 const path = require('path')
 const { format } = require('@jp6rt/utils')
 
-
 const normalize = (routepath) => {
 	return path.normalize(format('{0}{1}', '/', routepath))
 }
@@ -103,13 +102,21 @@ exports.removeFilename = removeFilename
 const matchPath = (routeHandler, reqPath) => {
 	// route parameters
 	// wildcards
-	// trailing slashes
+
+	// get routepath
+	let routepath = routeHandler.path
+
+	// add trailing slash and normalize ('/view' matches '/view/')
+	reqPath = normalize(format('{0}/', reqPath))
+	routepath = normalize(format('{0}/', routepath))
 
 	// reqPathSplit -
 	// remove filename if there is any and split
 	const reqPathSplit = splitter(removeFilename(reqPath))
-	// routeHandlerSplit -
-	const routeHandlerSplit = splitter(removeFilename(routeHandler))
+	// routepath -
+	const routepathSplit = splitter(routepath)
+
+
 }
 
 exports.matchPath = matchPath

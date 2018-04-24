@@ -3,6 +3,7 @@ const { validPath, normalize } = require('../path')
 const Route = require('./Route')
 const HandlersStore = require('./HandlersStore')
 const HashedStore = require('sb-hashedstore')
+const { SERVER_STATE } = require('../enums/server_state')
 
 const RequestHandler = class {
 	constructor() {
@@ -14,9 +15,9 @@ const RequestHandler = class {
 		 * @property { HashedStore } hashedStore
 		 */
 		this.hashedStore = new HashedStore
-		// All handlers are not inserted to the stack directly if the server hasn't started yet
-		// they will be inserted on a queue and attach once the server is ready
-		this.serverStarted = !1
+		// All handlers are not inserted to the stack directly if sebas is not ready to take app handlers
+		// they will be inserted on a queue and attach once the prehandlers is ready
+		this.serverStarted = SERVER_STATE.NotStarted
 		this.pendingHandlers = []
 	}
 	/**

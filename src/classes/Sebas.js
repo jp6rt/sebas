@@ -3,6 +3,7 @@
 const RequestHandler = require('./RequestHandler')
 const { createServer } = require('http')
 const clilogger = require('@jp6rt/cli-logger')
+const { SERVER_STATE } = require('../enums/server_state')
 
 /**
  * handlers
@@ -59,6 +60,7 @@ const Sebas = class extends RequestHandler {
 		// resolve
 		return new Promise((resolve) => {
 			this.server.listen(config.port, () => {
+				this.serverStarted = SERVER_STATE.Started
 				this.logger.accent('server has started on port: {0}', config.port)
 				resolve(1)
 			})
@@ -69,6 +71,7 @@ const Sebas = class extends RequestHandler {
 	 * @method
 	 */
 	stop() {
+		this.serverStarted = SERVER_STATE.Stopped
 		this.server.unref()
 	}	
 }
