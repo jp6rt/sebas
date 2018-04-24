@@ -25,14 +25,14 @@ const HandlersStore = class {
 		 * Holds all handlers for get request
 		 */
 		this[Symbol.for('GET')] = []
-		/**
+		/**routeHandler.path
 		 * @property
 		 * Holds all handlers for post request
 		 */
 		this[Symbol.for('POST')] = []
 		/**
 		 * @property
-		 * Holds all handlers for put request
+		 * Holds all handlers for put requestrouteHandler.path
 		 */
 		this[Symbol.for('PUT')] = []
 		/**
@@ -81,10 +81,7 @@ const HandlersStore = class {
 		// match and filter the right handlers for the path
 		const handlers =  this[Symbol.for(method)]		
 			//  routeHandler - is an instance of RouteHandler
-			.filter(routeHandler => {
-				// path matching logic here
-				return true
-			})
+			.filter(routeHandler => matchPath(routeHandler.path, reqPath))
 		return handlers
 	}
 }
