@@ -16,6 +16,9 @@ describe('path utility functions', () => {
 		it('should split the path into [/]', () => {
 			expect(splitter(path3)).toEqual(['/'])
 		})
+		it('should split the path into [*] (wildcard)', () => {
+			expect(splitter('*')).toEqual(['/*'])
+		})
 		it('should split the path into [/*]', () => {
 			expect(splitter(path4)).toEqual(['/*'])
 		})
@@ -64,7 +67,7 @@ describe('path utility functions', () => {
 	})
 
 	// additional methods
-	const { getTopParentPath, getFilename, removeFilename, matchPath } = require('./path')
+	const { getTopParentPath, getFilename, removeFilename } = require('./path')
 
 	describe('(getTopParentPath)', () => {
 		it('should return a blank parent for single paths', () => {
@@ -104,9 +107,5 @@ describe('path utility functions', () => {
 			expect(removeFilename(path1)).toEqual(path1)
 			expect(removeFilename(path2)).toEqual(path2)
 		})
-	})
-
-	describe('(matchPath)', () => {
-
 	})
 })

@@ -76,10 +76,10 @@ const RequestHandler = class {
 	handleRequest(request, response) {
 		// fetch handlers from cache
 		// if not cached, recalculate handlers
-		this.logger.silent('handlers:options')
-		console.log(this.handlersStore.retrieveHandlers('options'))
-		this.logger.silent('handlers:get')
-		console.log(this.handlersStore.retrieveHandlers('get'))
+		this.logger.primary('handlers:options: {0}', this.handlersStore.retrieveHandlers('options'))
+		// console.log(this.handlersStore.retrieveHandlers('options'))
+		this.logger.primary('handlers:get: {0}', this.handlersStore.retrieveHandlers('get'))
+		// console.log(this.handlersStore.retrieveHandlers('get'))
 	}
 }
 

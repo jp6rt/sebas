@@ -79,10 +79,11 @@ const HandlersStore = class {
 		// always evalute the method in uppercase
 		method = method.toUpperCase()
 		// match and filter the right handlers for the path
-		const handlers =  this[Symbol.for(method)]
+		const handlers =  this[Symbol.for(method)]		
 			//  routeHandler - is an instance of RouteHandler
 			.filter(routeHandler => {
 				// path matching logic here
+				return true
 			})
 		return handlers
 	}
