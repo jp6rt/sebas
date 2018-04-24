@@ -65,7 +65,7 @@ const Sebas = class extends RequestHandler {
 		// resolve
 		return new Promise((resolve) => {
 			this.server.listen(config.port, () => {
-				this.serverStarted = SERVER_STATE.Started
+				this.serverState = SERVER_STATE.Started
 				this.logger.accent('server has started on port: {0}', config.port)
 				resolve(1)
 			})
@@ -76,7 +76,7 @@ const Sebas = class extends RequestHandler {
 	 * @method
 	 */
 	stop() {
-		this.serverStarted = SERVER_STATE.Stopped
+		this.serverState = SERVER_STATE.Stopped
 		this.server.unref()
 	}	
 }

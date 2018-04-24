@@ -5,6 +5,7 @@ const HandlersStore = require('./HandlersStore')
 const HashedStore = require('sb-hashedstore')
 const { SERVER_STATE } = require('../enums/server_state')
 const { extractRouteParams } = require('../routeparam')
+const { badRequestHandler } = require('../handlers/badrequest')
 
 const RequestHandler = class {
 	constructor() {
@@ -18,7 +19,7 @@ const RequestHandler = class {
 		this.hashedStore = new HashedStore
 		// All handlers are not inserted to the stack directly if sebas is not ready to take app handlers
 		// they will be inserted on a queue and attach once the prehandlers is ready
-		this.serverStarted = SERVER_STATE.NotStarted
+		this.serverState = SERVER_STATE.NotStarted
 		this.pendingHandlers = []
 	}
 	/**
@@ -30,9 +31,9 @@ const RequestHandler = class {
 	 * this parameter should not be used by the application and should only be used internally
 	 */
 	insertHandler(method, routepath, handler, override) {
-		if (this.serverStarted || override)
-			this.handlersStore.insertHandler(method, routepath, handler)
-		else 
+		if (this.serverState === SERVER_STATE.Started  || override) {
+			this.handlersStore.insertHandler(method, routepath, handler, !0)
+		} else 
 			this.pendingHandlers.push([method, routepath, handler])
 	}
 	insertQueuedHandlers() {
@@ -112,12 +113,12 @@ const RequestHandler = class {
 				request.routeParams = routeParams
 				h.handler(request, response, next.bind(this))
 				
-			}				
+			}
 		}
 
 		// start iteration if found more than one handlers
-		handlers.length > 0 && next()
-
+		if ( handlers.length > 0 )
+			next()
 	}
 }
 

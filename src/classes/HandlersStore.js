@@ -50,14 +50,24 @@ const HandlersStore = class {
 		 * all handlers are cached so we won't need to re-caculate the handlers
 		 */
 		this.handlersCache = new Map
+		/**
+		 * Add a counter for all core handlers, return 0 handlers on retrieve operation
+		 * if app hander was added
+		 * This allows sebas to determine if its a bad request (=no app handlers)
+		 */
+		this.coreHandlersCount = 0
 	}
 	/**
 	 * @method
 	 * @param { string } method 
 	 * @param { string } routepath 
 	 * @param { function } handler 
+	 * @param { boolean } core
 	 */
-	insertHandler(method, routepath, handler) {
+	insertHandler(method, routepath, handler, core) {
+
+		if ( core )
+			++this.coreHandlersCount
 
 		// some logging
 		// const logger = (require('@jp6rt/cli-logger'))('HandlersStore (insertHandler)', !0)
@@ -75,6 +85,12 @@ const HandlersStore = class {
 			})
 		} else this[Symbol.for(method)].push(new RouteHandler(routepath, ++this.index, handler))
 	}
+	/**
+	 * 
+	 * @param {*} method 
+	 * @param {*} reqPath 
+	 * @param {*} hash 
+	 */
 	retrieveHandlers(method, reqPath, hash) {
 
 		// always evalute the method in uppercase
@@ -96,6 +112,11 @@ const HandlersStore = class {
 			const handlers = this[Symbol.for(method)]		
 				//  routeHandler - is an instance of RouteHandler
 				.filter(routeHandler => matchPath(routeHandler.path, reqPath))
+
+			/**	will revisit this in the future
+			// if the same counts as core handlers, then no app handler was added then treat as bad request
+			this.coreHandlersCount === handlers.length && (handlers.badRequest = !0)
+			*/
 
 			this.handlersCache.set(hash, handlers)
 			

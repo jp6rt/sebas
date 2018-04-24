@@ -2,7 +2,7 @@
   "name": "@jpart/sebas",
   "version": "2.0.0",
   "description": "DIY nodejs server for dev environment and internal projects",
-  "main": "./src/index.js",
+  "main": "./src/sebas.js",
   "scripts": {
 	"test": "jasmine",
 	"test-matchpath": "jasmine ./src/path.match.spec.js --random=false"
