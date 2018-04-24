@@ -5,7 +5,10 @@
   "main": "./src/sebas.js",
   "scripts": {
 	"test": "jasmine",
-	"test-matchpath": "jasmine ./src/path.match.spec.js --random=false"
+	"test-matchpath": "jasmine ./src/path.match.spec.js --random=false",
+	"test-sebas-get": "jasmine ./src/sebas.get.spec.js --random=false",
+	"test-sebas-post": "jasmine ./src/sebas.post.spec.js --random=false",
+	"start": "node ./tests/tests.js"
   },
   "repository": {
     "type": "git",
