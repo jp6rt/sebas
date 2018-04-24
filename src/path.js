@@ -109,7 +109,7 @@ const matchPath = (routepath, reqPath) => {
 	/**
 	 * Logging/debugging - disable after tests are passed
 	 */
-	const logger = clilogger('MatchPath', !1)
+	// const logger = clilogger('MatchPath', !1)
 
 	// remove filename on the request URL
 	reqPath = removeFilename(reqPath)
@@ -122,8 +122,8 @@ const matchPath = (routepath, reqPath) => {
 	const reqPathSplit = splitter(reqPath)
 	const routepathSplit = splitter(routepath)
 
-	logger.error('reqPathSplit: {0}', reqPathSplit)
-	logger.error('routepathSplit: {0}', routepathSplit)
+	// logger.error('reqPathSplit: {0}', reqPathSplit)
+	// logger.error('routepathSplit: {0}', routepathSplit)
 
 	let index = 0
 	let matchCounter = 0
@@ -135,12 +135,12 @@ const matchPath = (routepath, reqPath) => {
 		const cPathReq = reqPathSplit[index]
 		const cPathRoute = routepathSplit[index]
 
-		logger.accent('cPathReq: {0}', cPathReq)
-		logger.accent('cPathRoute: {0}', cPathRoute)
+		// logger.accent('cPathReq: {0}', cPathReq)
+		// logger.accent('cPathRoute: {0}', cPathRoute)
 
 		// if found a wildcard then break
 		if ( cPathRoute === '/*' ) {
-			logger.silent('cPathRoute: {0} is a wildcard.', cPathRoute)
+			// logger.silent('cPathRoute: {0} is a wildcard.', cPathRoute)
 			wildcardMatch = true
 			++matchCounter
 			wildcardIndex = ++index // increment index by 1 to match the matchCounter
@@ -149,21 +149,21 @@ const matchPath = (routepath, reqPath) => {
 
 		// route parameters  always push through
 		if ( isRouteParam(cPathRoute) )
-			logger.silent('cPathRoute: {0} is a route parameter.', cPathRoute), 
+			// logger.silent('cPathRoute: {0} is a route parameter.', cPathRoute), 
 			++matchCounter
 		
 		if (cPathRoute === cPathReq)
-			logger.silent('cPathRoute: {0} is equal to cPathRoute: {1}', cPathRoute, cPathReq), 
+			// logger.silent('cPathRoute: {0} is equal to cPathRoute: {1}', cPathRoute, cPathReq), 
 			++matchCounter		
 
 		// advance to next index
 		++index
 	}
 
-	logger.primary('wildcardMatch: {0}', wildcardMatch)
-	logger.primary('wildcardIndex: {0}', wildcardIndex)
-	logger.primary('matchCounter: {0}', matchCounter)
-	logger.primary('routepathSplit.length: {0}', routepathSplit.length)
+	// logger.primary('wildcardMatch: {0}', wildcardMatch)
+	// logger.primary('wildcardIndex: {0}', wildcardIndex)
+	// logger.primary('matchCounter: {0}', matchCounter)
+	// logger.primary('routepathSplit.length: {0}', routepathSplit.length)
 
 	return (wildcardMatch && wildcardIndex === matchCounter) || matchCounter === routepathSplit.length
 }

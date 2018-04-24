@@ -75,14 +75,32 @@ const HandlersStore = class {
 			})
 		} else this[Symbol.for(method)].push(new RouteHandler(routepath, ++this.index, handler))
 	}
-	retrieveHandlers(method, reqPath) {
+	retrieveHandlers(method, reqPath, hash) {
+
 		// always evalute the method in uppercase
 		method = method.toUpperCase()
-		// match and filter the right handlers for the path
-		const handlers =  this[Symbol.for(method)]		
-			//  routeHandler - is an instance of RouteHandler
-			.filter(routeHandler => matchPath(routeHandler.path, reqPath))
-		return handlers
+
+		// fetch handlers from cache
+		// if not cached, recalculate handlers
+
+
+		// some logging
+		const logger = (require('@jp6rt/cli-logger'))('HandlersStore (retrieveHandlers)', !0)
+
+		if (this.handlersCache.get(hash)) {
+			logger.silent('get from cache - hash: {0}, reqPath: {1}', hash, reqPath)
+			return this.handlersCache.get(hash)
+		} else {
+			logger.silent('recalculate handlers - hash: {0}, reqPath: {1}', hash, reqPath)
+			// match and filter the right handlers for the path
+			const handlers = this[Symbol.for(method)]		
+				//  routeHandler - is an instance of RouteHandler
+				.filter(routeHandler => matchPath(routeHandler.path, reqPath))
+
+			this.handlersCache.set(hash, handlers)
+			
+			return handlers
+		}
 	}
 }
 

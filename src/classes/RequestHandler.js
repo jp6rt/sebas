@@ -74,12 +74,22 @@ const RequestHandler = class {
 		return this.route('DELETE', routepath, handler)
 	}
 	handleRequest(request, response) {
-		// fetch handlers from cache
-		// if not cached, recalculate handlers
-		this.logger.primary('handlers:options: {0}', this.handlersStore.retrieveHandlers('options'))
-		// console.log(this.handlersStore.retrieveHandlers('options'))
-		this.logger.primary('handlers:get: {0}', this.handlersStore.retrieveHandlers('get'))
-		// console.log(this.handlersStore.retrieveHandlers('get'))
+
+		const { method, url } = request
+		const handlers = this.handlersStore.
+			retrieveHandlers(method, url, this.hashedStore.hash(url)).
+			slice() // slice to make sure we are CLONING the handlers
+
+		// create an iterant and iterate the handlers array
+
+		const next = () => {
+			const handler = handlers.shift()
+			handler.handler(request, response, next.bind(this))
+		}
+
+		// start iteration if found more than one handlers
+		handlers.length > 0 && next()
+
 	}
 }
 
