@@ -1,5 +1,5 @@
 {
-  "name": "@jpart/sebas",
+  "name": "sebas",
   "version": "2.0.0",
   "description": "DIY nodejs server for dev environment and internal projects",
   "main": "./src/sebas.js",
