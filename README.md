@@ -31,6 +31,22 @@ sebas.get('/')
 * port - port
 * timeout - server timeout (default=5000)
 
+#### Supported methods
+
+* get
+* post
+* put
+* delete
+* options
+
+****
+
+```javascript
+sebas.post('/*', (req, res) => {
+	// do something
+})
+```
+
 ### Using sb-static to serve static files
 
 
