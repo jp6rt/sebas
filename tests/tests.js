@@ -65,7 +65,7 @@ const { format } = require('@jp6rt/utils')
 		logger.silent('response headers: {0}', headers)
 
 		response.on('data', (data) => {
-			logger.silent('response data: {0}', data.toString())
+			logger.primary('response data: {0}', data.toString())
 		})
 
 		// sebas.stop()
@@ -78,7 +78,7 @@ const { format } = require('@jp6rt/utils')
 		logger.silent('response headers: {0}', headers)
 
 		response.on('data', (data) => {
-			logger.silent('response data: {0}', data.toString())
+			logger.primary('response data: {0}', data.toString())
 		})
 
 	})
@@ -90,7 +90,7 @@ const { format } = require('@jp6rt/utils')
 		logger.silent('response headers: {0}', headers)
 
 		response.on('data', (data) => {
-			logger.silent('response data: {0}', data.toString())
+			logger.primary('response data: {0}', data.toString())
 		})
 
 	})
@@ -98,7 +98,7 @@ const { format } = require('@jp6rt/utils')
 	http.get('http://localhost:3000/view/sub', (response) => {
 
 		response.on('data', (data) => {
-			logger.silent('response data: {0}', data.toString())
+			logger.primary('response data: {0}', data.toString())
 		})
 
 	})

@@ -62,8 +62,13 @@ exports.isRouteParam = isRouteParam
  * @returns { boolean } 
  */
 const validPath = (routepath) => {
+
+	// override splitChar to always use forward slash
+	// this will be the standard api usage
+	const splitCharRoute = '/'
+
 	// const logger = (require('@jp6rt/cli-logger'))('Path', !0)
-	if (routepath.slice(0, 1) !== splitChar && routepath.slice(0, 2) !== format('.{0}', splitChar))
+	if (routepath.slice(0, 1) !== splitCharRoute && routepath.slice(0, 2) !== format('.{0}', splitCharRoute))
 		return !1
 	const splitted = splitter(routepath)
 	let validPathCounts = 0
