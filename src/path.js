@@ -5,9 +5,10 @@
 const path = require('path')
 const { format } = require('@jp6rt/utils')
 const clilogger = require('@jp6rt/cli-logger')
+const splitChar = process.platform === 'win32' ? '\\' : '/'
 
 const normalize = (routepath) => {
-	return path.normalize(format('{0}{1}', '/', routepath))
+	return path.normalize(format('{0}{1}', splitChar, routepath))
 }
 
 exports.normalize = normalize
@@ -19,8 +20,8 @@ exports.normalize = normalize
  */
 const splitter = (routepath) => {
 	let result = []
-	normalize(routepath).slice(1).split('/').forEach((str) => { 
-		result.push('/' + str)
+	normalize(routepath).slice(1).split(splitChar).forEach((str) => { 
+		result.push(splitChar + str)
 	})
 	return result
 }
@@ -35,7 +36,7 @@ exports.splitter = splitter
  * @returns { boolean }
  */
 const valid = (routepath) => {
-	const validPathRgx = /^\/:?[a-zA-Z0-9]*/
+	const validPathRgx = /^(\/|\\):?[a-zA-Z0-9]*/
 	return !!routepath.match(validPathRgx)
 }
 
@@ -47,7 +48,7 @@ exports.valid = valid
  * @returns { boolean }
  */
 const isRouteParam = (routepath) => {
-	const routeParamRgx = /^\/:[a-zA-Z0-9]+/
+	const routeParamRgx = /^(\/|\\):[a-zA-Z0-9]+/
 	return !!routepath.match(routeParamRgx)
 }
 
@@ -62,7 +63,7 @@ exports.isRouteParam = isRouteParam
  */
 const validPath = (routepath) => {
 	// const logger = (require('@jp6rt/cli-logger'))('Path', !0)
-	if (routepath.slice(0, 1) !== '/' && routepath.slice(0, 2) !== './')
+	if (routepath.slice(0, 1) !== splitChar && routepath.slice(0, 2) !== format('.{0}', splitChar))
 		return !1
 	const splitted = splitter(routepath)
 	let validPathCounts = 0
@@ -89,7 +90,7 @@ exports.getFilename = getFilename
 
 const removeFilename = (reqPath) => {
 	const st = reqPath.replace(getFilename(reqPath), '')
-	return st.slice(-1) === '/' ? st.slice(0, st.length - 1) : st
+	return st.slice(-1) === splitChar ? st.slice(0, st.length - 1) : st
 }
 
 exports.removeFilename = removeFilename
@@ -115,8 +116,8 @@ const matchPath = (routepath, reqPath) => {
 	reqPath = removeFilename(reqPath)
 
 	// add trailing slash and normalize ('/view' matches '/view/')
-	reqPath = normalize(format('{0}/', reqPath))
-	routepath = normalize(format('{0}/', routepath))
+	reqPath = normalize(format('{0}{1}', reqPath, splitChar))
+	routepath = normalize(format('{0}{1}', routepath, splitChar))
 
 	// split
 	const reqPathSplit = splitter(reqPath)
