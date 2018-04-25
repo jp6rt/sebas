@@ -32,7 +32,6 @@
     "@jp6rt/cli-logger": "^1.0.9",
     "@jp6rt/utils": "^1.0.4",
     "chalk": "^2.4.0",
-    "memchync": "^1.1.0",
     "rxjs": "^5.5.10",
     "sb-hashedstore": "^1.0.1"
   }
