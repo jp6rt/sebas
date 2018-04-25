@@ -17,11 +17,11 @@ npm i sebas --save
 await sebas.start({ debugMode: !1, port: 8000 })
 
 sebas.get('/')
-	.pipe((request, response) => {
-		response.writeHead(200, {
-			'Content-Type': 'text/plain'
-		})
-		response.end('Hello World!')
+ .pipe((request, response) => {
+	 response.writeHead(200, {
+		 'Content-Type': 'text/plain'
+	 })
+	 response.end('Hello World!')
 	})
 
 ```
@@ -47,19 +47,19 @@ const { format } = require('@jp6rt/utils')
 memchync.init('127.0.0.1:11211')
 
 sebas.get('/*')
-	.pipe((request, response, next) => {
+ .pipe((request, response, next) => {
 		
-		servestatic(request, response, next, {
-			'dir': format('{0}/dist', __dirname),
-			'hashedStore': sebas.hashedStore,
-			'memchync': memchync,
-			'fallBack':  format('{0}/dist/index.html', __dirname)
-		   })
+ servestatic(request, response, next, {
+  'dir': format('{0}/dist', __dirname),
+  'hashedStore': sebas.hashedStore,
+  'memchync': memchync,
+  'fallBack':  format('{0}/dist/index.html', __dirname)
+ })
 
-	})
+ })
 
 ;(async () => {
-	await sebas.start({ debugMode: !0, port: 8000 })
+ await sebas.start({ debugMode: !0, port: 8000 })
 })()
 
 ```
