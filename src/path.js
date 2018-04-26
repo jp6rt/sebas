@@ -5,10 +5,14 @@
 const path = require('path')
 const { format } = require('@jp6rt/utils')
 const clilogger = require('@jp6rt/cli-logger')
-const splitChar = process.platform === 'win32' ? '\\' : '/'
+const splitChar = '/' 
 
 const normalize = (routepath) => {
-	return path.normalize(format('{0}{1}', splitChar, routepath))
+
+	// forcing windows to use forward slash
+	const n = process.platform !== 'win32' ? path.normalize.bind(path) : s => s.replace(/(\\|\/)+/g, '/')
+
+	return n(format('{0}{1}', splitChar, routepath))
 }
 
 exports.normalize = normalize
@@ -36,7 +40,7 @@ exports.splitter = splitter
  * @returns { boolean }
  */
 const valid = (routepath) => {
-	const validPathRgx = /^(\/|\\):?[a-zA-Z0-9]*/
+	const validPathRgx = /^\/:?[a-zA-Z0-9]*/
 	return !!routepath.match(validPathRgx)
 }
 
@@ -48,7 +52,7 @@ exports.valid = valid
  * @returns { boolean }
  */
 const isRouteParam = (routepath) => {
-	const routeParamRgx = /^(\/|\\):[a-zA-Z0-9]+/
+	const routeParamRgx = /^\/:[a-zA-Z0-9]+/
 	return !!routepath.match(routeParamRgx)
 }
 

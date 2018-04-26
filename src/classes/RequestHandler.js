@@ -92,7 +92,10 @@ const RequestHandler = class {
 	 */
 	execRouteHandlers(request, response) {
 
-		const { method, url } = request
+		let { method, url } = request
+
+		url = normalize(url)
+
 		const handlers = this.handlersStore.
 			retrieveHandlers(method, url, this.hashedStore.hash(url)).
 			slice() // slice to make sure we are CLONING the handlers
@@ -108,7 +111,7 @@ const RequestHandler = class {
 			if (h) {
 
 				// get routeParams
-				const routeParams = extractRouteParams(request.url, h.path)
+				const routeParams = extractRouteParams(url, h.path)
 
 				request.routeParams = routeParams
 				h.handler(request, response, next.bind(this))
