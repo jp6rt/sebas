@@ -4,6 +4,8 @@ const Route = require('./Route')
 const HandlersStore = require('./HandlersStore')
 const HashedStore = require('sb-hashedstore')
 const { SERVER_STATE } = require('../enums/server_state')
+const { extractRouteParams } = require('../routeparam')
+const { badRequestHandler } = require('../handlers/badrequest')
 
 const RequestHandler = class {
 	constructor() {
@@ -17,7 +19,7 @@ const RequestHandler = class {
 		this.hashedStore = new HashedStore
 		// All handlers are not inserted to the stack directly if sebas is not ready to take app handlers
 		// they will be inserted on a queue and attach once the prehandlers is ready
-		this.serverStarted = SERVER_STATE.NotStarted
+		this.serverState = SERVER_STATE.NotStarted
 		this.pendingHandlers = []
 	}
 	/**
@@ -29,9 +31,9 @@ const RequestHandler = class {
 	 * this parameter should not be used by the application and should only be used internally
 	 */
 	insertHandler(method, routepath, handler, override) {
-		if (this.serverStarted || override)
-			this.handlersStore.insertHandler(method, routepath, handler)
-		else 
+		if (this.serverState === SERVER_STATE.Started  || override) {
+			this.handlersStore.insertHandler(method, routepath, handler, !0)
+		} else 
 			this.pendingHandlers.push([method, routepath, handler])
 	}
 	insertQueuedHandlers() {
@@ -73,13 +75,53 @@ const RequestHandler = class {
 	delete(routepath, handler){
 		return this.route('DELETE', routepath, handler)
 	}
-	handleRequest(request, response) {
-		// fetch handlers from cache
-		// if not cached, recalculate handlers
-		this.logger.silent('handlers:options')
-		console.log(this.handlersStore.retrieveHandlers('options'))
-		this.logger.silent('handlers:get')
-		console.log(this.handlersStore.retrieveHandlers('get'))
+	/**
+	 * Use for single requests handlers only (e.g., error handling, timeout)
+	 * next iterator is not suported so make sure you end the response at this stage.
+	 * @param { object } request 
+	 * @param { object } response 
+	 * @param { function } handler 
+	 */
+	handleSingleRequest(request, response, handler) {
+		handler(request, response)
+	}
+	/**
+	 * Responsible for running the core and app handlers
+	 * @param { object } request 
+	 * @param { object } response 
+	 */
+	execRouteHandlers(request, response) {
+
+		let { method, url } = request
+
+		url = normalize(url)
+
+		const handlers = this.handlersStore.
+			retrieveHandlers(method, url, this.hashedStore.hash(url)).
+			slice() // slice to make sure we are CLONING the handlers
+
+		// some logging	
+		// this.logger.accent('handlers: {0}', handlers)
+
+		// create an iterant and iterate the handlers array
+
+		const next = () => {
+			const h = handlers.shift()
+			// check if handler is defined
+			if (h) {
+
+				// get routeParams
+				const routeParams = extractRouteParams(url, h.path)
+
+				request.routeParams = routeParams
+				h.handler(request, response, next.bind(this))
+				
+			}
+		}
+
+		// start iteration if found more than one handlers
+		if ( handlers.length > 0 )
+			next()
 	}
 }
 

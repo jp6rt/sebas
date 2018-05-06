@@ -1,5 +1,3 @@
-// const { METHOD_CONST } = require('../methods')
-// const { format } = require('@jp6rt/utils')
 const RequestHandler = require('./RequestHandler')
 const { createServer } = require('http')
 const clilogger = require('@jp6rt/cli-logger')
@@ -10,6 +8,7 @@ const { SERVER_STATE } = require('../enums/server_state')
  */
 const { prefightHandler } = require('../handlers/preflight')
 const { preloadHandler } = require('../handlers/preload')
+const { timeoutHandler } = require('../handlers/timeout')
 
 /**
  * Class for Sebas
@@ -26,7 +25,7 @@ const Sebas = class extends RequestHandler {
 			// pending manage active connections
 		})
 		this.server.on('request', (request, response) => {
-			this.handleRequest(request, response)
+			this.execRouteHandlers(request, response)
 		})
 		this.server.on('error', (error) => {
 			throw new Error(error)
@@ -34,10 +33,16 @@ const Sebas = class extends RequestHandler {
 	}
 	attachDefaultHandlers(timeout) {
 		// attach listeners
+		// timeout listener but currently the callback is not invoked
 		this.insertHandler('all', '*', (request, response, next) => {
-			request.setTimeout(timeout)
+			request.setTimeout(timeout, () => {
+				// this callback is not invoked.
+				this.logger.error('timeout: run timeout handler')
+				this.handleSingleRequest(request, response, timeoutHandler[2])
+			})
 			next()
 		}, 1)
+		// core listeners
 		this.insertHandler(...prefightHandler, 1) //preflight
 		this.insertHandler(...preloadHandler, 1) //preload
 	}
@@ -54,13 +59,13 @@ const Sebas = class extends RequestHandler {
 		 */
 		this.logger = clilogger('Sebas', config.debugMode)
 		// attach default handlers (preload, preflight)
-		this.attachDefaultHandlers( config.timeout || 30000)
+		this.attachDefaultHandlers( config.timeout || 5000)
 		// insert application handlers
 		this.insertQueuedHandlers()
 		// resolve
 		return new Promise((resolve) => {
 			this.server.listen(config.port, () => {
-				this.serverStarted = SERVER_STATE.Started
+				this.serverState = SERVER_STATE.Started
 				this.logger.accent('server has started on port: {0}', config.port)
 				resolve(1)
 			})
@@ -71,7 +76,7 @@ const Sebas = class extends RequestHandler {
 	 * @method
 	 */
 	stop() {
-		this.serverStarted = SERVER_STATE.Stopped
+		this.serverState = SERVER_STATE.Stopped
 		this.server.unref()
 	}	
 }

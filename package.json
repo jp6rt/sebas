@@ -1,10 +1,14 @@
 {
-  "name": "@jpart/sebas",
-  "version": "2.0.0",
+  "name": "sebas",
+  "version": "2.1.1",
   "description": "DIY nodejs server for dev environment and internal projects",
-  "main": "./src/index.js",
+  "main": "./src/sebas.js",
   "scripts": {
-    "test": "jasmine"
+    "test": "jasmine",
+    "test-matchpath": "jasmine ./src/path.match.spec.js --random=false",
+    "test-sebas-get": "jasmine ./src/sebas.get.spec.js --random=false",
+    "test-sebas-post": "jasmine ./src/sebas.post.spec.js --random=false",
+    "start": "node ./tests/tests.js"
   },
   "repository": {
     "type": "git",
@@ -25,10 +29,9 @@
     "jasmine": "^3.1.0"
   },
   "dependencies": {
-    "@jp6rt/cli-logger": "^1.0.8",
-    "@jp6rt/utils": "^1.0.3",
+    "@jp6rt/cli-logger": "^1.0.9",
+    "@jp6rt/utils": "^1.0.4",
     "chalk": "^2.4.0",
-    "memchync": "^1.1.0",
     "rxjs": "^5.5.10",
     "sb-hashedstore": "^1.0.1"
   }

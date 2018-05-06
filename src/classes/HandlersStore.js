@@ -25,14 +25,14 @@ const HandlersStore = class {
 		 * Holds all handlers for get request
 		 */
 		this[Symbol.for('GET')] = []
-		/**
+		/**routeHandler.path
 		 * @property
 		 * Holds all handlers for post request
 		 */
 		this[Symbol.for('POST')] = []
 		/**
 		 * @property
-		 * Holds all handlers for put request
+		 * Holds all handlers for put requestrouteHandler.path
 		 */
 		this[Symbol.for('PUT')] = []
 		/**
@@ -50,14 +50,24 @@ const HandlersStore = class {
 		 * all handlers are cached so we won't need to re-caculate the handlers
 		 */
 		this.handlersCache = new Map
+		/**
+		 * Add a counter for all core handlers, return 0 handlers on retrieve operation
+		 * if app hander was added
+		 * This allows sebas to determine if its a bad request (=no app handlers)
+		 */
+		this.coreHandlersCount = 0
 	}
 	/**
 	 * @method
 	 * @param { string } method 
 	 * @param { string } routepath 
 	 * @param { function } handler 
+	 * @param { boolean } core
 	 */
-	insertHandler(method, routepath, handler) {
+	insertHandler(method, routepath, handler, core) {
+
+		if ( core )
+			++this.coreHandlersCount
 
 		// some logging
 		// const logger = (require('@jp6rt/cli-logger'))('HandlersStore (insertHandler)', !0)
@@ -75,16 +85,43 @@ const HandlersStore = class {
 			})
 		} else this[Symbol.for(method)].push(new RouteHandler(routepath, ++this.index, handler))
 	}
-	retrieveHandlers(method, reqPath) {
+	/**
+	 * 
+	 * @param {*} method 
+	 * @param {*} reqPath 
+	 * @param {*} hash 
+	 */
+	retrieveHandlers(method, reqPath, hash) {
+
 		// always evalute the method in uppercase
 		method = method.toUpperCase()
-		// match and filter the right handlers for the path
-		const handlers =  this[Symbol.for(method)]
-			//  routeHandler - is an instance of RouteHandler
-			.filter(routeHandler => {
-				// path matching logic here
-			})
-		return handlers
+
+		// fetch handlers from cache
+		// if not cached, recalculate handlers
+
+
+		// some logging
+		// const logger = (require('@jp6rt/cli-logger'))('HandlersStore (retrieveHandlers)', !0)
+
+		if (this.handlersCache.get(hash)) {
+			// logger.silent('get from cache - hash: {0}, reqPath: {1}', hash, reqPath)
+			return this.handlersCache.get(hash)
+		} else {
+			// logger.silent('recalculate handlers - hash: {0}, reqPath: {1}', hash, reqPath)
+			// match and filter the right handlers for the path
+			const handlers = this[Symbol.for(method)]		
+				//  routeHandler - is an instance of RouteHandler
+				.filter(routeHandler => matchPath(routeHandler.path, reqPath))
+
+			/**	will revisit this in the future
+			// if the same counts as core handlers, then no app handler was added then treat as bad request
+			this.coreHandlersCount === handlers.length && (handlers.badRequest = !0)
+			*/
+
+			this.handlersCache.set(hash, handlers)
+			
+			return handlers
+		}
 	}
 }
 
