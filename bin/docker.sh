@@ -5,6 +5,7 @@ LPORT=3000
 IPORT=3000
 CID=""
 
+
 # build docker image
 sudo docker build -t $REPO .
 
@@ -14,9 +15,14 @@ docker run -p $LPORT:$IPORT -d $REPO
 # print resuls
 
 docker ps
-# docker logs <CID> - get container Id and print logs
 
+SBPS=$( sudo docker ps | grep $REPO )
 
+IFS=' ' read -ra ADDR <<< "$SBPS"
+for i in "${ADDR[@]}"; do
+    CID=$i
+    break
+done
 
-
-
+echo "container ID: $CID"
+docker logs $CID
