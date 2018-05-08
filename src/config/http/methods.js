@@ -1,3 +1,3 @@
 exports.methods = [
-	'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'
+  'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'
 ] 
