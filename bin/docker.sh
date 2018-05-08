@@ -18,8 +18,8 @@ docker ps
 
 SBPS=$( sudo docker ps | grep $REPO )
 
-IFS=' ' read -ra ADDR <<< "$SBPS"
-for i in "${ADDR[@]}"; do
+IFS=' ' read -ra C <<< "$SBPS"
+for i in "${C[@]}"; do
     CID=$i
     break
 done
