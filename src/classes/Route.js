@@ -34,7 +34,7 @@ const Route = class {
     // Handler for arguments (routepath, handler)
     if (typeof arg0 === 'string') {
       // guard the path if not valid
-      if (!validPath(arg0) || !validPath(arg0.slice(1, arg0.length)) || arg0 !== '*')
+      if (!validPath(arg0) || !validPath(arg0.slice(1, arg0.length)))
         throw new Error(format('The path ({0}) you provided is not valid', arg0))
 
       const routepath = arg0.slice(0, 1) == '.' && validPath(arg0.slice(1, arg0.length)) 
