@@ -53,6 +53,10 @@ const Sebas = class extends RequestHandler {
    * @returns { Promise }  
    */
   start(config) {
+    if (this.serverState === SERVER_STATE.Started) {
+      return Promise.resolve(1)
+    }
+
     /**
      * @property
      * logger instance
