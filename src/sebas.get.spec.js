@@ -2,7 +2,7 @@ const sebas = require('../src/sebas')
 const http = require('http')
 const { format } = require('@jp6rt/utils')
 
-fdescribe('GET', () => {
+describe('GET', () => {
 
   beforeAll(async () => {
     try {

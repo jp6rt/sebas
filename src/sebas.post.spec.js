@@ -3,6 +3,8 @@ const http = require('http')
 const logger = (require('@jp6rt/cli-logger'))('Sebas [POST]', !0)
 const { format } = require('@jp6rt/utils')
 
+// this is causing some strange issue where the server close is not working properly
+// skip for now
 xdescribe('POST credentials', () => {
 
   let statusCode, responseText = '', headers
