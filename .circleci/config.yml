@@ -1,0 +1,18 @@
+version: 2
+
+jobs:
+  build:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:10.16
+    steps:
+      - checkout
+      - run:
+          name: Show the current branch
+          command: echo ${CIRCLE_BRANCH}
+      - run:
+          name: Install local dependencies
+          command: npm install
+      - run:
+          name: Testing
+          command: npm run test
