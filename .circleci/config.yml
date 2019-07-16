@@ -32,7 +32,9 @@ jobs:
             - dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Test
-          command: npx nyc npm test --reporter=text-lcov
+          command: npm test
+      - store_test_results:
+          path: coverage
       - store_artifacts:
           path: coverage
           prefix: coverage
