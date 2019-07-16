@@ -4,7 +4,7 @@
   "description": "DIY nodejs server for dev environment and internal projects",
   "main": "./src/sebas.js",
   "scripts": {
-    "test": "nyc jasmine",
+    "test": "nyc --reporter=lcov --reporter=text-summary jasmine",
     "test-matchpath": "jasmine ./src/path.match.spec.js --random=false",
     "test-sebas-get": "jasmine ./src/sebas.get.spec.js --random=false",
     "test-sebas-post": "jasmine ./src/sebas.post.spec.js --random=false",
