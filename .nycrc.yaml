@@ -3,3 +3,4 @@ include:
   - "src/**/*.js"
 exclude:
   - "**/*.spec.js"
+check-coverage: true
