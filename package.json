@@ -4,7 +4,7 @@
   "description": "DIY nodejs server for dev environment and internal projects",
   "main": "./src/sebas.js",
   "scripts": {
-    "test": "jasmine",
+    "test": "nyc jasmine",
     "test-matchpath": "jasmine ./src/path.match.spec.js --random=false",
     "test-sebas-get": "jasmine ./src/sebas.get.spec.js --random=false",
     "test-sebas-post": "jasmine ./src/sebas.post.spec.js --random=false",
@@ -26,7 +26,8 @@
   "homepage": "https://github.com/jp6rt/sebas#readme",
   "devDependencies": {
     "eslint": "^6.0.1",
-    "jasmine": "^3.1.0"
+    "jasmine": "^3.1.0",
+    "nyc": "^14.1.1"
   },
   "dependencies": {
     "@jp6rt/cli-logger": "^1.0.9",
