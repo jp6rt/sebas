@@ -1,5 +1,7 @@
 ## Sebas (sebastian)
 
+[![CircleCI](https://circleci.com/gh/jp6rt/sebas.svg?style=svg)](https://circleci.com/gh/jp6rt/sebas)
+
 DIY nodejs server for dev environment and internal projects
 
 #### Installation
