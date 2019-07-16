@@ -11,7 +11,8 @@ jobs:
           name: Show the current branch
           command: echo ${CIRCLE_BRANCH}
       - restore_cache:
-        key: dependency-cache-{{ checksum "package.json" }}
+        keys: 
+          - dependency-cache-{{ checksum "package.json" }}
       - run:
           name: Install local dependencies
           command: npm install
