@@ -2,7 +2,7 @@
 
 ## Sebas (sebastian)
 
-DIY nodejs server for dev environment and internal projects
+DIY nodejs server library for dev environment and internal projects
 
 #### Installation
 
